@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import CardRow from './components/CardRow'
 import Card from './components/Card'
-import { resetDeck, drawFromDeck } from './api'
-import './index.css'
+import { resetDeck } from './api'
+
 
 class App extends Component {
 
@@ -13,27 +13,23 @@ class App extends Component {
   }
 
   resetCards() {
-    console.log('resetCards called')
     resetDeck().then(
       data => {
-        drawFromDeck({deck_id: data.deck_id}).then(
-          data => {
-            let cards = data.cards
-            this.setState({
+          let cards = data.cards
+          this.setState({
               cards: [cards.splice(0, 7), cards.splice(0, 7), cards],
               selections: 0,
               result: null
             })
           }
         )
-    })
-  }
+    }
 
   selectRow(rowNum) {
     let midTrickStack = []
-    if (rowNum == 0) { 
+    if (rowNum === 0) { 
       midTrickStack = [...this.state.cards[1],...this.state.cards[0],...this.state.cards[2]]
-    } else if (rowNum == 1) {
+    } else if (rowNum === 1) {
       midTrickStack = [...this.state.cards[0],...this.state.cards[1],...this.state.cards[2]]
     } else {
       midTrickStack = [...this.state.cards[1],...this.state.cards[2],...this.state.cards[0]]
@@ -56,11 +52,16 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
     const selectRow = this.selectRow.bind(this)
     return (
-      <div className="innerDiv">
-        <button onClick={()=>this.resetCards()} className="mainButton" >Start or Reset Trick</button> 
+      <div style={style.innerDiv}>
+        {
+          this.state.result ?
+          <h2 style={style.mainHeader}>BAM!</h2>
+          :
+          <h2 style={style.mainHeader}>Some MATH MAGIC boutta happen. PICK A CARD!</h2>
+        }
+        <button style={style.resetButton} onClick={()=>this.resetCards()} >Start or Reset Trick</button> 
         {
           this.state.result ? 
             <Card image={this.state.result.image} />
@@ -74,6 +75,36 @@ class App extends Component {
       </div>
     );
   }
+}
+
+document.body.style.backgroundColor = "darkgreen"
+
+const style = {
+
+  innerDiv: {
+    boxSizing: 'border-box',
+    paddingTop: '5%',
+    paddingLeft: '25%',
+  },
+
+  mainHeader: {
+    boxSizing: 'border-box',
+    color: 'whitesmoke',
+    fontFamily: 'Lucida Console',
+  },
+
+  resetButton: {
+    backgroundColor: 'whitesmoke',
+    border: '2px gray',
+    borderRadius: '5px',
+    boxSizing: 'border-box',
+    color: '#700000',
+    fontFamily: 'Lucida Console',
+    fontSize: '18px',
+    padding: '15px',
+    textAlign: 'center',
+  }
+
 }
 
 export default App;

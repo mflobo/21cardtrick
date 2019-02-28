@@ -11,7 +11,7 @@ class CardRow extends Component {
       <div style={style.rowBox}>
         {
           this.props.cards.length > 0 ? 
-            <button onClick={()=> this.props.onSelect()}>My card is in this row</button>
+            <button style={style.rowButton} onClick={()=> this.props.onSelect()}>MY CARD IS<br></br>IN THIS ROW </button>
           : null
         }
         
@@ -29,6 +29,17 @@ const style = {
   rowBox: {
     display: 'flex',
     flexDirection: 'row',
+  },
+
+  rowButton: {
+    backgroundColor: 'whitesmoke',
+    border: '2px gray',
+    borderRadius: '5px',
+    color: '#700000',
+    fontFamily: 'Lucida Console',
+    fontSize: '18px',
+    padding: '15px',
+    textAlign: 'center'
   }
 
 }
